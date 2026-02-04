@@ -1,0 +1,5 @@
+node_modules
+public/mfes
+mfe-dashboard
+mfe-widget
+*.min.js

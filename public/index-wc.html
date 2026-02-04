@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC Micro-frontends - Security Demo</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    
+    <script src="./storage-audit.js"></script>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+    <div class="container">
+        <header class="header" role="banner">
+            <h1>
+                <span class="icon icon-xl icon-accent" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </span>
+                POC: Micro-frontends Security
+            </h1>
+            <p>React 18 (Dashboard) + Vue 3 (Widget) - Web Components demonstrando vulnerabilidades</p>
+            
+            <nav class="mode-selector" role="navigation" aria-label="Seleção de modo de segurança">
+                <button class="mode-btn danger active" id="btn-vulnerable" aria-pressed="true" aria-label="Ativar modo vulnerável - demonstra falhas de segurança">
+                    <span class="icon icon-sm" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                    </span>
+                    Modo Vulnerável
+                </button>
+                <button class="mode-btn" id="btn-secure" aria-pressed="false" aria-label="Ativar modo seguro - demonstra proteções">
+                    <span class="icon icon-sm" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </span>
+                    Modo Seguro
+                </button>
+            </nav>
+
+            <div id="mode-alert" role="alert" aria-live="polite"></div>
+        </header>
+
+        <main id="main-content" class="mfe-container" role="main">
+            <section class="mfe-card" aria-labelledby="dashboard-title">
+                <h2 id="dashboard-title">
+                    <span class="icon icon-sm" style="color: #60a5fa;" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </span>
+                    MFE 1: Dashboard Financeiro <span style="color: #61dafb; font-size: 0.7em;">(React)</span>
+                </h2>
+                <div id="mfe-dashboard" role="region" aria-label="Dashboard financeiro"></div>
+            </section>
+
+            <section class="mfe-card" aria-labelledby="widget-title">
+                <h2 id="widget-title">
+                    <span class="icon icon-sm" style="color: #f59e0b;" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </span>
+                    MFE 2: Widget Publicitário <span style="color: #42b883; font-size: 0.7em;">(Vue)</span>
+                </h2>
+                <div id="mfe-widget" role="region" aria-label="Widget publicitário"></div>
+            </section>
+
+            <section class="mfe-card full-width" aria-labelledby="console-title">
+                <div class="console-panel">
+                    <div class="window-dots" aria-hidden="true">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <h3 id="console-title">
+                        <span class="icon icon-sm icon-accent" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                            </svg>
+                        </span>
+                        Console de Segurança
+                        <button id="btn-clear-console" class="btn-clear" type="button" aria-label="Limpar console de segurança">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3 6h18"/>
+                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                            </svg>
+                            <span class="sr-only">Limpar</span>
+                        </button>
+                    </h3>
+                    <div id="security-console" role="log" aria-live="polite" aria-label="Logs de segurança"></div>
+                </div>
+            </section>
+
+            <section class="mfe-card full-width" aria-labelledby="telemetry-title">
+                <div class="console-panel">
+                    <div class="window-dots" aria-hidden="true">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <h3 id="telemetry-title">
+                        <span class="icon icon-sm icon-accent" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/>
+                                <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/>
+                                <circle cx="12" cy="12" r="2"/>
+                                <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/>
+                                <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/>
+                            </svg>
+                        </span>
+                        Telemetria do Servidor (Tempo Real)
+                    </h3>
+                    <div id="server-telemetry" role="log" aria-live="polite" aria-label="Eventos de telemetria" style="font-size: 12px;"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- SecureStorage: Criptografia client-side com PBKDF2 + AES-GCM -->
+    <script src="./secure-storage.js"></script>
+
+    <!-- Host Application: Carrega MFEs React + Vue como Web Components -->
+    <script src="./host-app-wc.js" type="module"></script>
+</body>
+</html>
