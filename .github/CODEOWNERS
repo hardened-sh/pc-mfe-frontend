@@ -1,0 +1,20 @@
+# CODEOWNERS - Define quem deve aprovar Pull Requests
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner - todos os arquivos
+* @hardened-sh
+
+# Segurança - arquivos críticos precisam de review do owner
+/public/secure-storage.js @hardened-sh
+/public/storage-audit.js @hardened-sh
+/shared/ @hardened-sh
+/server.js @hardened-sh
+
+# MFEs
+/mfe-dashboard/ @hardened-sh
+/mfe-widget/ @hardened-sh
+
+# Configuração e CI
+/.github/ @hardened-sh
+/package.json @hardened-sh
+/.env.example @hardened-sh
